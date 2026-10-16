@@ -1,0 +1,44 @@
+<h2>Pacientes</h2>
+
+<form [formGroup]="form" (ngSubmit)="guardar()">
+  <label>DNI <input type="number" formControlName="dni" /></label>
+  @if (campoInvalido('dni')) { <small>DNI obligatorio, de 7 u 8 dígitos</small> }
+
+  <label>Nombre <input type="text" formControlName="nombre" /></label>
+  @if (campoInvalido('nombre')) { <small>Obligatorio, hasta 50 caracteres</small> }
+
+  <label>Apellido <input type="text" formControlName="apellido" /></label>
+  @if (campoInvalido('apellido')) { <small>Obligatorio, hasta 50 caracteres</small> }
+
+  <label>Teléfono <input type="text" formControlName="telefono" /></label>
+  @if (campoInvalido('telefono')) { <small>Entre 10 y 20 caracteres</small> }
+
+  <button type="submit">{{ editandoId() === null ? 'Agregar' : 'Guardar cambios' }}</button>
+  @if (editandoId() !== null) {
+    <button type="button" (click)="cancelar()">Cancelar</button>
+  }
+</form>
+
+@if (error()) { <p class="error">{{ error() }}</p> }
+
+<table>
+  <thead>
+    <tr><th>DNI</th><th>Apellido</th><th>Nombre</th><th>Teléfono</th><th></th></tr>
+  </thead>
+  <tbody>
+    @for (p of pacientes(); track p.id) {
+      <tr>
+        <td>{{ p.dni }}</td>
+        <td>{{ p.apellido }}</td>
+        <td>{{ p.nombre }}</td>
+        <td>{{ p.telefono }}</td>
+        <td>
+          <button type="button" (click)="editar(p)">Editar</button>
+          <button type="button" (click)="eliminar(p)">Eliminar</button>
+        </td>
+      </tr>
+    } @empty {
+      <tr><td colspan="5">No hay pacientes cargados</td></tr>
+    }
+  </tbody>
+</table>
