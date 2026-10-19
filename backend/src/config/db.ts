@@ -9,8 +9,8 @@ export const pool = mysql.createPool({
     database: env.DB_NAME,
     waitForConnections: true,
     connectionLimit: 10,
-    decimalNumbers: true, // DECIMAL llega como number y no como string
-    dateStrings: true, // DATE llega como 'YYYY-MM-DD' y no como objeto Date
+    decimalNumbers: true,
+    dateStrings: true,
 });
 
 export async function testConnection(): Promise<void> {

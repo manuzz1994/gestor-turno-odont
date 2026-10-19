@@ -13,7 +13,6 @@ export interface Turno {
 
 export type TurnoInput = Omit<Turno, 'id'>;
 
-// Turno con los datos del paciente, para el calendario y la card
 export interface TurnoConPaciente extends Turno {
     paciente_nombre: string;
     paciente_apellido: string;
@@ -47,8 +46,6 @@ export const TurnoModel = {
         return rows[0] ?? null;
     },
 
-    // true si el doctor ya tiene otro turno ese dia a menos de 60 minutos.
-    // excluirId se usa en el update para no comparar el turno consigo mismo.
     async hayConflicto(data: TurnoInput, excluirId = 0): Promise<boolean>{
         const [rows]= await pool.query<RowDataPacket[]>(
             'SELECT id FROM turno WHERE id_doctor= ? AND fecha= ? AND id <> ? ' +
