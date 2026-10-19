@@ -1,0 +1,60 @@
+<h2>Agenda</h2>
+
+<label>
+  Día
+  <input #f type="date" [value]="fecha()" (change)="cambiarFecha(f.value)" />
+</label>
+
+<h3>{{ editandoId() === null ? 'Nuevo turno' : 'Editar turno' }}</h3>
+
+<form [formGroup]="form" (ngSubmit)="guardar()">
+  <label>
+    Paciente
+    <select formControlName="id_paciente">
+      <option [ngValue]="null">Elegí un paciente</option>
+      @for (p of pacientes(); track p.id) {
+        <option [ngValue]="p.id">{{ p.apellido }}, {{ p.nombre }}</option>
+      }
+    </select>
+  </label>
+  @if (pacientes().length === 0) { <small>Primero cargá pacientes en la sección Pacientes</small> }
+  @if (campoInvalido('id_paciente')) { <small>Elegí un paciente</small> }
+
+  <label>Fecha <input type="date" formControlName="fecha" /></label>
+  @if (campoInvalido('fecha')) { <small>Fecha obligatoria</small> }
+
+  <label>Hora <input type="time" formControlName="hora" /></label>
+  @if (campoInvalido('hora')) { <small>Hora obligatoria</small> }
+
+  <label>Observaciones <textarea formControlName="observaciones" rows="2"></textarea></label>
+  @if (campoInvalido('observaciones')) { <small>Hasta 200 caracteres</small> }
+
+  <button type="submit">{{ editandoId() === null ? 'Agregar turno' : 'Guardar cambios' }}</button>
+  @if (editandoId() !== null) {
+    <button type="button" (click)="cancelar()">Cancelar</button>
+  }
+</form>
+
+@if (error()) { <p class="error">{{ error() }}</p> }
+
+<table>
+  <thead>
+    <tr><th>Hora</th><th>Paciente</th><th>Teléfono</th><th>Observaciones</th><th></th></tr>
+  </thead>
+  <tbody>
+    @for (t of turnosDelDia(); track t.id) {
+      <tr>
+        <td>{{ t.hora.slice(0, 5) }}</td>
+        <td>{{ t.paciente_apellido }}, {{ t.paciente_nombre }}</td>
+        <td>{{ t.paciente_telefono }}</td>
+        <td>{{ t.observaciones }}</td>
+        <td>
+          <button type="button" (click)="editar(t)">Editar</button>
+          <button type="button" (click)="eliminar(t)">Eliminar</button>
+        </td>
+      </tr>
+    } @empty {
+      <tr><td colspan="5">No hay turnos para este día</td></tr>
+    }
+  </tbody>
+</table>
