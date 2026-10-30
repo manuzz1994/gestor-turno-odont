@@ -8,7 +8,6 @@ import { SesionDoctor } from '../../services/sesion-doctor';
 import { TurnoApi } from '../../services/turno-api';
 import { mensajeError } from '../../utils/errores';
 
-// Fecha de hoy como 'yyyy-mm-dd' en hora local (toISOString usaría UTC y podría correr el día)
 function hoy(): string {
   const d = new Date();
   const mes = String(d.getMonth() + 1).padStart(2, '0');
@@ -34,7 +33,6 @@ export class Turnos implements OnInit {
   editandoId = signal<number | null>(null);
   error = signal<string | null>(null);
 
-  // slice(0, 10) tolera que la fecha llegue como '2026-10-20T03:00:00.000Z'
   turnosDelDia = computed(() => {
     const doctor = this.sesion.doctorActual();
     return this.turnos()
@@ -50,7 +48,6 @@ export class Turnos implements OnInit {
   });
 
   constructor() {
-    // Si cambia el doctor, se cancela cualquier edición en curso
     effect(() => {
       this.sesion.doctorActual();
       untracked(() => this.cancelar());

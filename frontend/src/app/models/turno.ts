@@ -1,15 +1,13 @@
-// turno.ts
 export interface Turno {
   id: number;
-  fecha: string;          // 'yyyy-mm-dd'
-  hora: string;           // 'HH:mm' o 'HH:mm:ss'
+  fecha: string;
+  hora: string;
   observaciones: string | null;
   id_doctor: number;
   id_paciente: number;
 }
 export type TurnoInput = Omit<Turno, 'id'>;
 
-// Lo que devuelve GET /turno (incluye datos del paciente)
 export interface TurnoConPaciente extends Turno {
   paciente_nombre: string;
   paciente_apellido: string;

@@ -9,13 +9,18 @@
       }
     </select>
   </label>
+  <button type="button" (click)="agregandoDoctor.set(true)">Agregar doctor</button>
 </header>
 
 @if (error()) {
   <p class="error">{{ error() }}</p>
 }
 
-@if (sesion.doctorActual()) {
+@if (agregandoDoctor()) {
+  <main>
+    <app-doctores (creado)="doctorCreado($event)" (cerrar)="agregandoDoctor.set(false)" />
+  </main>
+} @else if (sesion.doctorActual()) {
   <nav>
     <button type="button" [class.activo]="seccion() === 'agenda'" (click)="seccion.set('agenda')">Agenda</button>
     <button type="button" [class.activo]="seccion() === 'pacientes'" (click)="seccion.set('pacientes')">Pacientes</button>
